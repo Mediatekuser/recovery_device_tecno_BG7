@@ -140,11 +140,12 @@ PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
 PLATFORM_SECURITY_PATCH := 2099-12-31
 VENDOR_SECURITY_PATCH := $(PLATFORM_SECURITY_PATCH)
 BOOT_SECURITY_PATCH := $(PLATFORM_SECURITY_PATCH)
+BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
 
 # Crypto
-TW_INCLUDE_CRYPTO := false
-TW_INCLUDE_CRYPTO_FBE := false
-TW_INCLUDE_FBE_METADATA_DECRYPT := false
+TW_INCLUDE_CRYPTO := true
+TW_INCLUDE_CRYPTO_FBE := true
+TW_INCLUDE_FBE_METADATA_DECRYPT := true
 BOARD_USES_METADATA_PARTITION := true
 TW_USE_FSCRYPT_POLICY := 2
 TW_FORCE_KEYMASTER_VER := true
@@ -224,6 +225,19 @@ TARGET_RECOVERY_DEVICE_MODULES += \
     android.hardware.health@2.1-impl.recovery \
     android.hardware.health@2.1-service
 
+# FBE Gatekeeper HAL
+TARGET_RECOVERY_DEVICE_MODULES += \
+    android.hardware.gatekeeper@1.0-impl \
+    android.hardware.gatekeeper@1.0-service \
+    libkeymaster_messages
+
+# Volume Daemon and Metadata FBE Tools
+TARGET_RECOVERY_DEVICE_MODULES += \
+    vndk-core \
+    ashmemd \
+    ashmemd_aidl_interface-cpp \
+    libashmemd_client
+
 # Dynamic Partition Resizing Utilities
 TARGET_RECOVERY_DEVICE_MODULES += \
     tune2fs \
@@ -231,5 +245,5 @@ TARGET_RECOVERY_DEVICE_MODULES += \
     e2fsdroid
 
 # Version
-TW_DEVICE_VERSION := R
+TW_DEVICE_VERSION := H24
 TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
